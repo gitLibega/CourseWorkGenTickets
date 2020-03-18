@@ -7,7 +7,7 @@
 <?import javafx.scene.effect.Blend?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane fx:id="Pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="713.0" prefWidth="809.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="713.0" prefWidth="809.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <children>
       <Button fx:id="openfile" layoutX="14.0" layoutY="13.0" mnemonicParsing="false" onAction="#ClickOpen" prefHeight="25.0" prefWidth="107.0" text="Открыть файл" />
       <Button fx:id="Saveasdoc" layoutX="503.0" layoutY="13.0" mnemonicParsing="false" onAction="#ClickSavedoc" text="Сохранить в .doc" />
@@ -22,9 +22,9 @@
       <TextArea fx:id="questions" layoutX="50.0" layoutY="138.0" prefHeight="200.0" prefWidth="712.0" />
       <TextArea fx:id="tickets" layoutX="50.0" layoutY="402.0" prefHeight="200.0" prefWidth="712.0" />
       <Label layoutX="173.0" layoutY="13.0" prefHeight="25.0" prefWidth="182.0" text="Количество вопросов в билете:" textAlignment="CENTER" wrapText="true" />
-      <Spinner layoutX="173.0" layoutY="42.0" prefHeight="25.0" prefWidth="58.0" />
+      <Spinner fx:id="countQuestions" layoutX="173.0" layoutY="42.0" prefHeight="25.0" prefWidth="88.0" />
       <Label layoutX="173.0" layoutY="67.0" prefHeight="25.0" prefWidth="182.0" text="Количество  билетов:" textAlignment="CENTER" wrapText="true" />
-      <Spinner layoutX="173.0" layoutY="93.0" prefHeight="25.0" prefWidth="58.0" />
+      <Spinner fx:id="countTickets" layoutX="173.0" layoutY="93.0" prefHeight="25.0" prefWidth="88.0" />
 
    </children>
 </Pane>

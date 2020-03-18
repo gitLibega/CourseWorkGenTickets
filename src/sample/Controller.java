@@ -3,20 +3,27 @@ package sample;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfWriter;
 import javafx.event.ActionEvent;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.Pane;
 
 import javax.swing.*;
 import java.io.*;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
+import java.util.ResourceBundle;
 
-public class Controller {
+public class Controller implements Initializable {
 
     public TextArea questions;
     public TextArea tickets;
     public javafx.scene.layout.Pane Pane;
+    public Spinner countQuestions;
+    public Spinner countTickets;
 
     String questionstext;
     ArrayList <String> questiosArray= new ArrayList <String>();
@@ -46,6 +53,12 @@ public class Controller {
             }
             questiosArray.removeAll(Arrays.asList("", null));
             questiosArray2.removeAll(Arrays.asList("", null));
+            SpinnerValueFactory svf=new SpinnerValueFactory.IntegerSpinnerValueFactory(1,questiosArray.size(),1);
+            svf.setWrapAround(true);
+            countQuestions.setValueFactory(svf);
+            SpinnerValueFactory svf1=new SpinnerValueFactory.IntegerSpinnerValueFactory(1,150,1);
+            svf1.setWrapAround(true);
+            countTickets.setValueFactory(svf1);
             for (int i = 0; i <questiosArray.size(); i++) {
                 questions.appendText(questiosArray.get(i)+"\n");
             }
@@ -88,14 +101,14 @@ public class Controller {
     public void ClickGen(ActionEvent actionEvent) {
         tickets.setText("");
         ticketsArray.removeAll(ticketsArray);
-        int countTickets=16;
+        int countTicketss=Integer.parseInt(countTickets.getValue().toString());
 
-        while(countTickets!=0)
-        { countTickets--;
+        while(countTicketss!=0)
+        { countTicketss--;
             tickets.appendText("________________________________________________");
             tickets.appendText("\n");
             ticketsArray.add("________________________________________________");
-            for (int i = 0; i <3 ; i++)
+            for (int i = 0; i <Integer.parseInt(countQuestions.getValue().toString()) ; i++)
             {
                rand=ran.nextInt(questiosArray.size());
                 tickets.appendText(questiosArray.get(rand)+" "+"\n");
@@ -114,7 +127,12 @@ public class Controller {
 
 
         }
-        }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+    }
+}
 
 
 
