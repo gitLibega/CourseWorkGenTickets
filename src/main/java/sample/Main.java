@@ -9,7 +9,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.stage.Stage;
-
 import java.util.ArrayList;
 
 public class Main extends Application {
@@ -20,8 +19,11 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("/sample.fxml"));
-        primaryStage.setTitle("Билеты");
-        primaryStage.setScene(new Scene(root, 900,900));
+        
+        primaryStage.setTitle("Tickets");
+        
+        
+        primaryStage.setScene(new Scene(root, 510,514));
         primaryStage.show();
 
     }

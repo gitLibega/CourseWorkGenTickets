@@ -9,9 +9,14 @@ import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
 
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 
+import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 
 
@@ -23,9 +28,6 @@ import javax.print.PrintService;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 
-
-
-
 import java.awt.print.PrinterException;
 
 import java.awt.print.PrinterJob;
@@ -35,244 +37,85 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.*;
 import java.io.File;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
-import java.util.ResourceBundle;
-
+import java.util.*;
 
 
 public class Controller implements Initializable {
 
-    public TextArea questions;
-    public TextArea tickets;
+
     public javafx.scene.layout.Pane Pane;
-    public Spinner countQuestions;
-    public Spinner countTickets;
+    public TextArea questions;                 //вопросы из файла
+    public TextArea tickets;                  //сгенерированные билеты
+    public Spinner countQuestions;           //компонент спиннер в котором задается значение количества вопросов в билете
+    public Spinner countTickets;            //компонент спиннер в котором задается значение количества билетов
+    public TextArea title;                  //заголовок билета
 
 
 
-    String questionstext;
-    ArrayList <String> questiosArray= new ArrayList <String>();
-    ArrayList <String> questiosArray2 = new ArrayList <String>();
+    public  String titleTicket;
+    ArrayList <String> questionsArray= new ArrayList <String>();
+    ArrayList <String> questionsArray2 = new ArrayList <String>();
     ArrayList <String> ticketsArray=new ArrayList<String>();
 
-
-    Random ran=new Random();
-    int rand=0;
-    //Открыть файл
-    public void ClickOpen(ActionEvent actionEvent) throws IOException {
-
-
-
-            questions.setText("");
-            JFileChooser fileopen = new JFileChooser();
-            fileopen.setAcceptAllFileFilterUsed(false);
-            FileNameExtensionFilter filter = new FileNameExtensionFilter("allowed files", "doc", "docx", "txt");
-            fileopen.addChoosableFileFilter(filter);
-
-            fileopen.setCurrentDirectory(new File(".."));
-            int ret = fileopen.showDialog(null, "Открыть файл");
-
-
-            if (ret == JFileChooser.APPROVE_OPTION) {
-
-                File file = fileopen.getSelectedFile();
-                questionstext = file.getPath();
-                FileInputStream fr = new FileInputStream(questionstext);
-
-                BufferedReader br = new BufferedReader(new InputStreamReader(fr));
-                String str;
-                while ((str = br.readLine()) != null) {
-                    questiosArray.add(str);
-                    questiosArray2.add(str);
-                }
-                br.close();
-
-        }
-
-
-            questiosArray.removeAll(Arrays.asList("", null));
-            questiosArray2.removeAll(Arrays.asList("", null));
-            SpinnerValueFactory svf=new SpinnerValueFactory.IntegerSpinnerValueFactory(1,questiosArray.size(),1);
-            svf.setWrapAround(true);
-            countQuestions.setValueFactory(svf);
-            SpinnerValueFactory svf1=new SpinnerValueFactory.IntegerSpinnerValueFactory(1,150,1);
-            svf1.setWrapAround(true);
-            countTickets.setValueFactory(svf1);
-            for (int i = 0; i <questiosArray.size(); i++) {
-                questions.appendText(questiosArray.get(i)+"\n");
-            }
-
-
-
-
-    }
-    //Сохарнить в формате doc
-    public void ClickSavedoc(ActionEvent actionEvent) throws IOException {
-        if(ticketsArray.size()>0) {
-            try{
-
-
-            FileChooser fileChooser = new FileChooser();//Класс работы с диалогом выборки и сохранения
-            fileChooser.setTitle("Save Document");//Заголовок диалога
-            FileChooser.ExtensionFilter extFilter =
-                    new FileChooser.ExtensionFilter("docx files (*.docx)", "*.docx");//Расширение
-            fileChooser.getExtensionFilters().add(extFilter);
-
-            File file = fileChooser.showSaveDialog(null);
-            if (file != null) {
-                WordprocessingMLPackage docxFile;
-                docxFile=WordprocessingMLPackage.createPackage();
-
-                int count = 0;
-
-                for (int i = 0; i < ticketsArray.size(); i++) {
-                    if (ticketsArray.get(i) == "________________________________________________") {
-                        count++;
-                       docxFile.getMainDocumentPart().addParagraphOfText("ticket" + count);
-                    }
-                    docxFile.getMainDocumentPart().addParagraphOfText(ticketsArray.get(i));
-                }
-                File exportFile = new File("../new.docx");
-            docxFile.save(exportFile);
-            }
-            }
-            catch(Exception e) {
-                    e.printStackTrace();
-
-                }
-            }
-
-        else{
-            JOptionPane.showMessageDialog(null, "Сгенерируйте пожавуста билеты!");
-        }
-
-    }
-    //Сохранить в формате pdf
-    public void ClickSavepdf(ActionEvent actionEvent) throws IOException, DocumentException {
-        if(ticketsArray.size()>0) {
-        Document document = new Document();
-        FileChooser fileChooser = new FileChooser();//Класс работы с диалогом выборки и сохранения
-        fileChooser.setTitle("Save Document");//Заголовок диалога
-        FileChooser.ExtensionFilter extFilter =
-                new FileChooser.ExtensionFilter("PDF files (*.pdf)", "*.pdf");//Расширение
-        fileChooser.getExtensionFilters().add(extFilter);
-
-        File file = fileChooser.showSaveDialog(null);
-        if (file != null) {
-            String File=file.getPath();
-            PdfWriter.getInstance(document,new FileOutputStream(File));
-            document.open();
-            int count=0;
-
-            for (int i = 0; i <ticketsArray.size() ; i++) {
-                if(ticketsArray.get(i)=="________________________________________________") {
-                    count++;
-                    Paragraph p=new Paragraph();
-                    p.setAlignment(1);
-                    p.add("ticket"+count);
-                    document.add(p);
-                }
-
-                Paragraph p = new Paragraph();
-                p.add(ticketsArray.get(i));
-                document.add(p);
-            }
-            document.close();
-        }
-        }
-        else{
-            JOptionPane.showMessageDialog(null, "Сгенерируйте пожавуста билеты!");
-        }
-
-    }
-    //Сгенерировать билеты
-    public void ClickGen(ActionEvent actionEvent) {
-        if(questiosArray.size()>0) {
-            tickets.setText("");
-            ticketsArray.removeAll(ticketsArray);
-            int countTicketss = Integer.parseInt(countTickets.getValue().toString());
-
-            while (countTicketss != 0) {
-                countTicketss--;
-
-                tickets.appendText("ticket" + (Integer.parseInt(countTickets.getValue().toString()) - countTicketss));
-                tickets.appendText("\n");
-                tickets.appendText("________________________________________________");
-                tickets.appendText("\n");
-                ticketsArray.add("________________________________________________");
-                for (int i = 0; i < Integer.parseInt(countQuestions.getValue().toString()); i++) {
-                    rand = ran.nextInt(questiosArray.size());
-                    tickets.appendText(questiosArray.get(rand) + " " + "\n");
-                    ticketsArray.add(questiosArray.get(rand));
-                    questiosArray.remove(rand);
-                }
-                tickets.appendText("________________________________________________");
-                tickets.appendText("\n");
-
-
-                questiosArray.removeAll(questiosArray);
-                for (int i = 0; i < questiosArray2.size(); i++) {
-                    questiosArray.add(i, questiosArray2.get(i));
-                }
-
-            }
-        }
-        else{
-            JOptionPane.showMessageDialog(null, "Пожавуста заполните поле с вопросами!");
-        }
-    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
     }
+    //Открыть файл
 
-    public void ClickPrint(ActionEvent actionEvent) throws PrinterException, IOException, DocumentException {
-        Document document = new Document();
-        PdfWriter.getInstance(document, new FileOutputStream("../printFile.pdf"));
-        document.open();
-        int count=0;
+    /** метод нажатия на кнопку для открытия файла
+     *
+     * @param actionEvent
+     * @throws IOException
+     */
+    public void clickOpenFile(ActionEvent actionEvent) throws IOException {
+ OpenerQuestionsAndGeneratorTickets.openFileWithQuestions(questions,questionsArray,questionsArray2,countQuestions,countTickets);
+    }
 
-        for (int i = 0; i <ticketsArray.size() ; i++) {
-            if(ticketsArray.get(i)=="________________________________________________") {
-                count++;
-                Paragraph p=new Paragraph();
-                p.setAlignment(1);
-                p.add("ticket"+count);
-                document.add(p);
-            }
+    /** метод нажатия на кнопку для сохранения в формате docx
+     *
+     * @param actionEvent
+     * @throws IOException
+     */
+    public void clickSaveDocx(ActionEvent actionEvent) throws IOException {
+SaverDocxAndPDF.saveInDocxFile(ticketsArray,titleTicket);
+    }
 
-            Paragraph p = new Paragraph();
-            p.add(ticketsArray.get(i));
-            document.add(p);
-        }
-        document.close();
+    /** метод нажатия на кнопку для сохранения в формате pdf
+     *
+     * @param actionEvent
+     * @throws IOException
+     * @throws DocumentException
+     */
+    public void clickSavePdf(ActionEvent actionEvent) throws IOException, DocumentException {
+SaverDocxAndPDF.saveInPdfFile(ticketsArray,titleTicket);
 
-
-
-        printPDF("../printFile.pdf");
-        File file=new File("../printFile.pdf");
-        file.delete();
-
+    }
+    //Сгенерировать билеты
+    public void clickGenTickets(ActionEvent actionEvent) {
+        OpenerQuestionsAndGeneratorTickets.generateExamTickets(tickets,ticketsArray,questionsArray,questionsArray2,
+                                                                titleTicket,countQuestions,countTickets);
     }
 
 
-
-
-
-
-
-    public static void printPDF(String fileName)
-            throws IOException, PrinterException {
-        PrinterJob job = PrinterJob.getPrinterJob();
-        PDDocument doc = PDDocument.load(fileName);
-        doc.print(job);
+    /** Метод нажатия на кнопку для печати
+     * @param actionEvent
+     * @throws PrinterException
+     * @throws IOException
+     * @throws DocumentException
+     */
+    public void clickPrint(ActionEvent actionEvent) throws PrinterException, IOException, DocumentException {
+        PrintTickets.printDocumentWithTickets(ticketsArray,titleTicket);
     }
 
-
+    /** Метод нажатия на кнопку для ввода заголовка билета     *
+     * @param actionEvent
+     */
+    public void applyTitleBtn(ActionEvent actionEvent) {
+        titleTicket=title.getText();
     }
+}
 
 
 
