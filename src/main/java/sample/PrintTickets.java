@@ -7,17 +7,27 @@ import com.itextpdf.text.Font;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfWriter;
+import javafx.scene.chart.ScatterChart;
+import org.apache.log4j.helpers.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.font.PDFont;
+import org.apache.pdfbox.pdmodel.font.PDFontFactory;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.printing.PDFPageable;
 
+
+import javax.print.PrintService;
 import javax.swing.*;
+import javax.swing.text.StyleConstants;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.List;
 
 /*
  * PrintTickets Класс печати документа с билетами
@@ -26,22 +36,25 @@ import java.util.List;
  *
  * Author:Libega Ilya
  */
-public class PrintTickets {
+public class PrintTickets extends Controller {
 
 
 /**Метод создания документа и занесения в него данных с последующей печатью
  * @param ticketsArray - лист строк, где каждая строка формирует билеты и заголовок к ним
  * @param titleTicket-заголовок билета
  */
-    public static void printDocumentWithTickets(ArrayList<String> ticketsArray, String titleTicket) throws IOException, PrinterException, DocumentException {
+    public static void printDocumentWithTickets(ArrayList<String> ticketsArray, String titleTicket)
+                                                throws IOException, PrinterException, DocumentException,
+                                                URISyntaxException {
         if (ticketsArray.size()>0) {
+
             int count = 0; //Счетчик билетов
             Document document = new Document();
-            PdfWriter.getInstance(document, new FileOutputStream("../printFile.pdf"));
+
+            PdfWriter.getInstance(document, new FileOutputStream("printFile.pdf"));
             document.open();
 
-            BaseFont bf = BaseFont.createFont("resources/arial.TTF", BaseFont.IDENTITY_H, BaseFont.EMBEDDED); //подключаем файл шрифта, который поддерживает кириллицу
-            Font font = new Font(bf);
+          Font font= new Font(Font.FontFamily.TIMES_ROMAN);
 
             for (int i = 0; i < ticketsArray.size(); i++) {
                 if (ticketsArray.get(i) == "________________________________________________") {
@@ -58,9 +71,15 @@ public class PrintTickets {
                 document.add(p);
             }
             document.close();
-            printPDF("../printFile.pdf");
-            File file=new File("../printFile.pdf");
-            file.delete();
+try {
+    File file = new File("printFile.pdf");
+   print(file);
+    file.delete();
+}
+catch (Exception e)
+{
+    JOptionPane.showMessageDialog(null,e);
+}
         }
         else{
             JOptionPane.showMessageDialog(null, "Generate exam tickets please");
@@ -68,15 +87,37 @@ public class PrintTickets {
 
     }
 
+
+    /**Выбор принтера
+     *
+     * @return возвращает выбранный принтер
+     */
+    public static PrintService choosePrinter() {
+        PrinterJob printJob = PrinterJob.getPrinterJob();
+        if(printJob.printDialog()) {
+            return printJob.getPrintService();
+        }
+        else {
+            return null;
+        }
+    }
     /**Метод печати выбранного файла
      * @param fileName - имя файла, идущиего в печать
+     * @param printer-выбранный принтер
      */
-
-
-    public static void printPDF(String fileName)
+   /* public static void printPDF(String fileName, PrintService printer)
             throws IOException, PrinterException {
         PrinterJob job = PrinterJob.getPrinterJob();
+        job.setPrintService(printer);
         PDDocument doc = PDDocument.load(fileName);
-        doc.print(job);
+        doc.silentPrint(job);
+    }*/
+    private static <DDocument> void print(File file) throws PrinterException, IOException {
+
+        PDDocument doc = PDDocument.load(file);
+        PrinterJob job = PrinterJob.getPrinterJob();
+        job.setPageable(new PDFPageable(doc));
+        job.print();
+
     }
 }

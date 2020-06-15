@@ -1,46 +1,21 @@
 package sample;
 
-import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfWriter;
-import javafx.scene.control.*;
-import javafx.scene.control.TextArea;
-import javafx.stage.FileChooser;
-
-
-import org.apache.commons.io.FilenameUtils;
-import org.apache.pdfbox.pdmodel.PDDocument;
-
-
-import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.apache.poi.xwpf.usermodel.XWPFParagraph;
-import org.apache.poi.xwpf.usermodel.XWPFRun;
-import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
-
-
-
-
-
-import javax.print.PrintService;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.TextArea;
 
 import java.awt.print.PrinterException;
-
-import java.awt.print.PrinterJob;
-import  java.lang.*;
-import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import java.io.*;
-import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.*;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.ResourceBundle;
 
 
-public class Controller implements Initializable {
+public class Controller extends Main implements Initializable {
 
 
     public javafx.scene.layout.Pane Pane;
@@ -52,7 +27,7 @@ public class Controller implements Initializable {
 
 
 
-    public  String titleTicket;
+    public  String titleTicket="ticket";
     ArrayList <String> questionsArray= new ArrayList <String>();
     ArrayList <String> questionsArray2 = new ArrayList <String>();
     ArrayList <String> ticketsArray=new ArrayList<String>();
@@ -60,6 +35,7 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        title.setText("ticket ");
 
     }
     //Открыть файл
@@ -105,8 +81,9 @@ SaverDocxAndPDF.saveInPdfFile(ticketsArray,titleTicket);
      * @throws IOException
      * @throws DocumentException
      */
-    public void clickPrint(ActionEvent actionEvent) throws PrinterException, IOException, DocumentException {
+    public void clickPrint(ActionEvent actionEvent) throws PrinterException, IOException, DocumentException, URISyntaxException {
         PrintTickets.printDocumentWithTickets(ticketsArray,titleTicket);
+
     }
 
     /** Метод нажатия на кнопку для ввода заголовка билета     *

@@ -16,11 +16,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="keksach" />
+        <module name="TryingToBuildJar" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="11">
-      <module name="keksach" target="1.8" />
+      <module name="keksach" target="11" />
+      <module name="TryingToBuildJar" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>

@@ -23,7 +23,7 @@ public class Main extends Application {
         primaryStage.setTitle("Tickets");
         
         
-        primaryStage.setScene(new Scene(root, 510,514));
+        primaryStage.setScene(new Scene(root, 575,530));
         primaryStage.show();
 
     }

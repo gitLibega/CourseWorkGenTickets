@@ -27,8 +27,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class SaverDocxAndPDF {
-
+public class SaverDocxAndPDF extends Controller {
+    /** saveDocxFile-сохранение билетов в docx
+     *
+     * @param ticketsArray- списочный массив билетов
+     * @param titleTicket - загаловок билета
+     * @throws IOException
+     */
     public static void saveInDocxFile( ArrayList <String> ticketsArray, String titleTicket ) throws IOException {
 
         if(ticketsArray.size()>0) {
@@ -76,10 +81,18 @@ public class SaverDocxAndPDF {
             JOptionPane.showMessageDialog(null, "Generate exam tickets please");
         }
     }
+
+    /** saveInPdFile- сохранение с расширение pdf
+     *
+     * @param ticketsArray-массив билетов
+     * @param titleTicket- название билета
+     * @throws IOException
+     * @throws DocumentException
+     */
     public static void saveInPdfFile( ArrayList <String> ticketsArray, String titleTicket) throws IOException, DocumentException {
         if(ticketsArray.size()>0) {
             Document document = new Document();
-            BaseFont bf = BaseFont.createFont("C:\\Windows\\Fonts\\Arial.TTF", BaseFont.IDENTITY_H, BaseFont.EMBEDDED); //подключаем файл шрифта, который поддерживает кириллицу
+            BaseFont bf = BaseFont.createFont("/arial.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED); //подключаем файл шрифта, который поддерживает кириллицу
             Font font = new Font(bf);
             FileChooser fileChooser = new FileChooser();//Класс работы с диалогом выборки и сохранения
             fileChooser.setTitle("Save Document");//Заголовок диалога

@@ -24,9 +24,16 @@ import java.util.Random;
  *
  * Author:Libega Ilya
  */
-public class OpenerQuestionsAndGeneratorTickets
-{
-
+public class OpenerQuestionsAndGeneratorTickets extends Controller {
+    /** openFileWithQuestions
+     *
+     * @param questions-поле
+     * @param questionsArray
+     * @param questionsArray2
+     * @param countQuestions
+     * @param countTickets
+     * @throws IOException
+     */
     public static void openFileWithQuestions(TextArea questions, ArrayList<String> questionsArray, ArrayList<String> questionsArray2,
                                       Spinner countQuestions,Spinner countTickets) throws IOException {
         questions.setText("");
@@ -63,7 +70,7 @@ public class OpenerQuestionsAndGeneratorTickets
                 {
                     FileInputStream fis = new FileInputStream(file.getAbsolutePath());
                     XWPFDocument document = new XWPFDocument(fis);
-                    List<XWPFParagraph> paragraphs = document.getParagraphs();
+                    List<XWPFParagraph> paragraphs = document.getParagraphs();//заносим в лист обзацы считанные в документе
                     for(XWPFParagraph para:paragraphs)
                     {
                         questionsArray.add(para.getText());
@@ -85,6 +92,17 @@ public class OpenerQuestionsAndGeneratorTickets
             }
             }
         }
+
+    /**generateExamTickets
+     *
+     * @param tickets - поле с билетами
+     * @param ticketsArray -списочный масив с билетами
+     * @param questionsArray- списочный масив с вопросами
+     * @param questionsArray2 -списочный масив с вопросами
+     * @param titleTicket-заголовок билета
+     * @param countQuestions- спиннер с количеством вопросов в билете
+     * @param countTickets-спиннер с количеством билетов
+     */
         public static void generateExamTickets(TextArea tickets, ArrayList<String> ticketsArray, ArrayList<String> questionsArray,
                                                ArrayList<String> questionsArray2, String titleTicket, Spinner countQuestions,Spinner countTickets)
         {
