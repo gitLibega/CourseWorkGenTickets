@@ -92,8 +92,7 @@ public class SaverDocxAndPDF extends Controller {
     public static void saveInPdfFile( ArrayList <String> ticketsArray, String titleTicket) throws IOException, DocumentException {
         if(ticketsArray.size()>0) {
             Document document = new Document();
-            BaseFont bf = BaseFont.createFont("/arial.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED); //подключаем файл шрифта, который поддерживает кириллицу
-            Font font = new Font(bf);
+            Font font= new Font(Font.FontFamily.TIMES_ROMAN);
             FileChooser fileChooser = new FileChooser();//Класс работы с диалогом выборки и сохранения
             fileChooser.setTitle("Save Document");//Заголовок диалога
             FileChooser.ExtensionFilter extFilter =

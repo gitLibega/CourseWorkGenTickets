@@ -74,7 +74,7 @@ public class PrintTickets extends Controller {
 try {
     File file = new File("printFile.pdf");
    print(file);
-    file.delete();
+    file.deleteOnExit();
 }
 catch (Exception e)
 {
@@ -88,30 +88,13 @@ catch (Exception e)
     }
 
 
-    /**Выбор принтера
+    /** print
      *
-     * @return возвращает выбранный принтер
+     * @param file-файл идущий на печать
+     * @param <DDocument>
+     * @throws PrinterException
+     * @throws IOException
      */
-    public static PrintService choosePrinter() {
-        PrinterJob printJob = PrinterJob.getPrinterJob();
-        if(printJob.printDialog()) {
-            return printJob.getPrintService();
-        }
-        else {
-            return null;
-        }
-    }
-    /**Метод печати выбранного файла
-     * @param fileName - имя файла, идущиего в печать
-     * @param printer-выбранный принтер
-     */
-   /* public static void printPDF(String fileName, PrintService printer)
-            throws IOException, PrinterException {
-        PrinterJob job = PrinterJob.getPrinterJob();
-        job.setPrintService(printer);
-        PDDocument doc = PDDocument.load(fileName);
-        doc.silentPrint(job);
-    }*/
     private static <DDocument> void print(File file) throws PrinterException, IOException {
 
         PDDocument doc = PDDocument.load(file);
