@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="525.0" prefWidth="571.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+   <children>
+      <Button fx:id="openFile" layoutX="14.0" layoutY="13.0" mnemonicParsing="false" onAction="#clickOpenFile" prefHeight="25.0" prefWidth="120.0" text="Открыть файл">
+         <effect>
+            <DropShadow color="#1aab9a" />
+         </effect></Button>
+      <Button fx:id="saveAsDocx" layoutX="354.0" layoutY="14.0" mnemonicParsing="false" onAction="#clickSaveDocx" prefHeight="25.0" prefWidth="209.0" text="Сохранить в .docx">
+         <effect>
+            <DropShadow color="#1aab9a" />
+         </effect></Button>
+      <Button fx:id="saveAsPdf" layoutX="355.0" layoutY="50.0" mnemonicParsing="false" onAction="#clickSavePdf" prefHeight="25.0" prefWidth="209.0" text="Сохранить в .pdf">
+         <effect>
+            <DropShadow color="#1aab9a" />
+         </effect></Button>
+      <Label layoutX="256.0" layoutY="149.0" text="Вопросы">
+         <effect>
+            <ColorAdjust brightness="-1.0" />
+         </effect></Label>
+      <Label layoutX="214.0" layoutY="319.0" text="Сгенерированные билеты">
+         <effect>
+            <ColorAdjust brightness="-1.0" />
+         </effect></Label>
+      <Button fx:id="generateTickets" layoutX="14.0" layoutY="49.0" mnemonicParsing="false" onAction="#clickGenTickets" prefHeight="25.0" prefWidth="152.0" text="Сгенерировать билеты">
+         <effect>
+            <DropShadow color="#1aab9a" />
+         </effect>
+      </Button>
+
+      <Label layoutX="95.0" layoutY="74.0" prefHeight="38.0" prefWidth="107.0" text="Количество вопросов в билете:" wrapText="true">
+         <effect>
+            <ColorAdjust brightness="-1.0" contrast="-0.42" hue="-0.19" saturation="0.02" />
+         </effect></Label>
+      <Spinner fx:id="countQuestions" layoutX="95.0" layoutY="113.0" prefHeight="25.0" prefWidth="88.0" />
+      <Label layoutX="14.0" layoutY="74.0" prefHeight="38.0" prefWidth="88.0" text="Количество  билетов:" wrapText="true">
+         <effect>
+            <ColorAdjust brightness="-1.0" contrast="-0.42" hue="-0.19" saturation="0.02" />
+         </effect></Label>
+      <Spinner fx:id="countTickets" layoutX="14.0" layoutY="113.0" prefHeight="25.0" prefWidth="67.0" />
+      <TextArea fx:id="questions" editable="false" layoutX="8.0" layoutY="166.0" prefHeight="151.0" prefWidth="546.0">
+         <effect>
+            <DropShadow>
+               <color>
+                  <Color red="0.16196393966674805" green="0.431317001581192" blue="0.7605262994766235" />
+               </color>
+            </DropShadow>
+         </effect></TextArea>
+      <TextArea fx:id="tickets" editable="false" layoutX="8.0" layoutY="336.0" prefHeight="163.0" prefWidth="546.0">
+         <effect>
+            <DropShadow>
+               <color>
+                  <Color red="0.16196393966674805" green="0.431317001581192" blue="0.7605262994766235" />
+               </color>
+            </DropShadow>
+         </effect></TextArea>
+      <Button fx:id="printFile" layoutX="355.0" layoutY="85.0" mnemonicParsing="false" onAction="#clickPrint" prefHeight="25.0" prefWidth="209.0" text="Печать">
+         <effect>
+            <DropShadow color="#1aab9a" />
+         </effect></Button>
+      <TextArea fx:id="title" layoutX="215.0" layoutY="76.0" prefHeight="38.0" prefWidth="109.0">
+         <effect>
+            <Blend mode="RED" />
+         </effect>
+      </TextArea>
+      <Label layoutX="217.0" layoutY="51.0" prefHeight="25.0" prefWidth="107.0" text="Заголовок билета:" textAlignment="CENTER" wrapText="true">
+         <effect>
+            <ColorAdjust brightness="-1.0" contrast="-0.42" hue="-0.19" saturation="0.02" />
+         </effect>
+      </Label>
+      <Button fx:id="applyTitle" layoutX="215.0" layoutY="119.0" mnemonicParsing="false" onAction="#applyTitleBtn" prefHeight="25.0" prefWidth="109.0" text="Применить">
+         <effect>
+            <DropShadow color="#1aab9a" />
+         </effect>
+      </Button>
+
+   </children>
+   <effect>
+      <DropShadow>
+         <color>
+            <Color red="0.8236842155456543" green="0.11440058797597885" blue="0.11440058797597885" />
+         </color>
+      </DropShadow>
+   </effect>
+</Pane>
